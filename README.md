@@ -21,20 +21,21 @@ The course consists of the following 5 chapters.
 **Chapter 2** is a short introduction into Machine Learning including regression trees, random forests and cross-validation. The main example is a classic house price prediction.
 
   - Videos & Quizzes [https://mm.econ.mathematik.uni-ulm.de/public/ee-2/](https://mm.econ.mathematik.uni-ulm.de/public/ee-2/)
+  - [RTutor 2.zip](https://github.com/skranz/empecon/raw/main/rtutor_zip/RTutor%202.zip)  
   
 **Chapter 3** digs deeper into linear regression, focusing on the estimation of causal effects and endogeneity problems. In particular, I try to distill the importance of a source of exogenous variation if we want to have any chance of estimating causal effects.
 
   - Videos & Quizzes [https://mm.econ.mathematik.uni-ulm.de/public/ee-3/](https://mm.econ.mathematik.uni-ulm.de/public/ee-2/)
-  - [RTutor Problem Set 3]
+  - [RTutor 3.zip](https://github.com/skranz/empecon/raw/main/rtutor_zip/RTutor%203.zip)  
 
 **Chapter 4** covers difference-in-difference estimation. The main example is an experiment by eBay that estimates the effect of search engine marketing on revenues. The RTutor problem set also looks at a classic study on the employment effect of minimum wages. 
 
   - Videos & Quizzes [https://mm.econ.mathematik.uni-ulm.de/public/ee-4/](https://mm.econ.mathematik.uni-ulm.de/public/ee-4/)
-  - [RTutor Problem Set 4]
+  - [RTutor 4.zip](https://github.com/skranz/empecon/raw/main/rtutor_zip/RTutor%203.zip)  
   
 
 **Chapter 5** covers instrumental variable estimation and the potential outcomes framework for causal identification. The main application is a large randomized experiment that compares the efficiency of public and private job market counselling.
 
   - Videos & Quizzes [https://mm.econ.mathematik.uni-ulm.de/public/ee-5/](https://mm.econ.mathematik.uni-ulm.de/public/ee-5/)
-  - [RTutor Problem Set 5]
+  - [RTutor 5.zip](https://github.com/skranz/empecon/raw/main/rtutor_zip/RTutor%203.zip)  
   
