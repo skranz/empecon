@@ -1,0 +1,186 @@
+#< ignore
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, error=TRUE, dev="svg")
+library(miniMOOC)
+preview_mooc_rmd("vq_ee_1.Rmd", youtube.width=720)
+
+mm = miniMOOC::parse_mooc_rmd("vq_ee_1.Rmd",youtube.width = 720)
+saveRDS(mm, "vq_ee_1.Rds")
+```
+#>
+
+#. section
+
+Videos and questions for Chapter 1 of the course "Empirical Economics with R" at Ulm University (taught by Sebastian Kranz)
+
+### Bordeaux Red Wine and Ashenfelter's Wine Formula
+
+#. youtube id="K2gliZ-l9Ts", file="ee1 overview.mp4"
+
+## Small TV Documentation
+
+#. youtube id="O07zOyWg7co"
+
+#. section
+
+### Linear Regression
+
+#. youtube id="SyePVmrPwcI", file="ee1 2 Linear Regression.mp4"
+
+### Ordinary Least Squares Estimation
+
+#. youtube id="FgUsNcc0pBo", file="ee 1 3 OLS.mp4"
+
+### Estimating the Linear Regression in R
+
+#. youtube id="lieKh80ANp4", file="ee 1 4 First Regression in R.mp4"
+
+We have estimated in R the linear regression:
+
+$$price_t = \beta_0 + \beta_1 temp_t + \beta_2 rainwinter_t + \beta_3 rainharvest_t + u_t$$
+
+
+#< quiz "coeff_int"
+question: |
+  Which interpretation of our estimated coefficient $\hat \beta_1 = 22.3$ is correct?
+sc:
+  - If the average temperature in the growing season is 22.3 °C higher, we predict that the price index of the vintage increases by 1 percent.
+  - If the average temperature in the growing season is 1 °C higher, we predict that the price index of the vintage increases by 22.3 units.*
+  - If the average temperature in the growing season is 1 percent higher, we predict that the price index of the vintage increases by 22.3 percent.
+#>
+
+
+#< quiz "causal_interpretation"
+question: |
+  What about the following interpretation? 
+
+  *An average temperature increase by 1 °C increases a vintage's price index by 22.3 units.*
+sc:
+  - This is basically the same interpretation as the correct one above. So it is right.
+  - This is a weaker statement than the correct interpretation above. So it is also right.
+  - This is a stronger statement then the correct interpretation above and probably wrong.*
+success: |
+  This interpretation is stronger. For once, it does not mention that the 22.3 is only an estimate. (Our first interpretation also did not mention the word *estimate* explicitly, but it was implicit by saying *we predict*). The larger problem of this interpretation is that it implicitly says that the higher temperature *causes* the increase in the price index. Our earlier statement only said that we *predict* a higher price index. While in principle, it may seem reasonable that the temperature causally affects the wine quality, we will see that in our regression above the estimated coefficient of temperature also indirectly captures some effect of the age of a vintage on its price.
+#>
+
+### Regression Results and Adding Age as Explanatory Variable
+
+#. youtube id="n65Z-Cwk-fA", file="ee 1 5 Regression Results and Adding Age.mp4"
+
+We found the following regression results:
+
+$$
+\begin{eqnarray}
+\hat p_t &=& \hat \beta_0 &+& \hat \beta_1 temp_t &+& \hat \beta_2 rainwinter_t &+& \hat \beta_3 rainharvest_t &+& \hat \beta_4 age_t \\
+         &=& -323         &+& 19.1 \cdot temp_t &-& 0.1 \cdot rainwinter_t &+& 0.056 \cdot rainharvest_t &+& 0.8 \cdot age_t
+\end{eqnarray}
+$$
+
+
+
+#< quiz "age_coefficient"
+question: |
+  Compare the estimated coefficient $\hat \beta_1$ for temperature and $\hat \beta_4$ for age. Is the following statement correct?
+
+  *10 additional years of age increase our prediction of a vintage's price index by less than if the vintage had a by 0.5 °C higher average temperature during growing season.*
+sc:
+  - Yes*
+  - No
+success: |
+  This statement is correct. By dividing the coeffieficent $\hat \beta_1 / \hat \beta_4 = 23.7$ we find that one degree higher avereage temperature changes our price prediction by the same amount than 23.7 years higher age.
+#>
+
+#< quiz "age_quality"
+question: |
+  What about the following statement?
+
+  *This suggests that high enjoyment of drinking a Bordeaux wine is much more strongly affected by the temperature during its growing season than by its age.*
+sc:
+  - The statement seems roughly correct, even though one can debate whether the causal interpretation is right and what *much more strongly* means.
+  - The statement is probably substantially wrong.*
+success: |
+  Correct. Note that we use a vintage's auction price index as dependent variable. We do not directly use a measure of the enjoyment when drinking it. Even if a young Bordeaux wine would taste really bad and needed at least 10 years to ripe, we would not necessarily find a big estimate for the age coefficient. That is because, you can buy the young wine, keep it 10 years in your cellar and then drink it. So the coefficient is rather a measure for storage and time costs.
+#>
+
+#. youtube id="YvCSiWqi40Y", file="ee 6 explaining effect of age on temperature coefficient.mp4"
+
+#. section
+
+## Which control variables to add
+
+### Channel Variables
+#. youtube id="p2P7MOrhTAk", file="ee 7 which control variables to add channel variables.mp4"
+
+Consider the example from the video above. If you want to estimate the total causal effect from obtaining a university degree on wages, should you estimate the short regression:
+
+$$wage = \beta_0^S + \beta_1^S degree + u^S$$
+
+or the long regression where you control for being a manager?
+
+$$wage = \beta_0^L + \beta_1^L degree + + \beta_2^L manager + u^L$$
+#< quiz "short_or_long"
+question:
+sc:
+  - The short regression*
+  - The long regression
+#>
+
+### Unobserved confounders
+
+#. youtube id="Vh4fPAZVdPY", file="ee 8 unobserved confounders.mp4"
+
+#. section 
+
+### Log transformations
+
+Ashenfelter et. al. did use as dependent variable not the price index in levels but the natural logarithm of the price index:
+
+$$\log p_t = \beta_0 + \beta_1 temp_t + \beta_2 rainwinter_t + \beta_3 rainharvest_t + \beta_4 age_t + u_t$$
+
+#< quiz "log_pt"
+question: | 
+  What is the correct interpretation of the estimate $\hat \beta_1 = 0.616$ in the regression above?
+sc:
+  - If the temperature increases by 1% we predict that the price index increases by 0.616 units.
+  - If the temperature increases by 1 °C we predict that the price index increases by 0.616 percent.
+  - If the temperature increases by 1 °C we predict that the price index increases by 61.6 percent.*
+#>
+    
+#. youtube id="QYgdXQNqHrE", file="ee 9 log-level regression.mp4"
+
+
+We have shown in the figures also the R-squared of each regression. Consider the following two statements for a regression with dependent variable $y$:
+
+A: The R-squared is the square of the correlation between $y_t$  and $\hat y_t$, i.e. between the actual and and predicted values of the dependent variable.
+
+B: The R-squared measures the share of the variance of $y_t$ that can be explained by the estimated regression model.
+
+#< quiz "r-squared"
+question: Which statements are correct?
+sc:
+  - Only A
+  - Only B
+  - A and B*
+  - Neither A nor B
+#>
+
+#. youtube id="DuiqI29JLVY", file="ee 10 r-squared.mp4"
+
+#. section
+
+## Out-of-sample predictions
+
+#. youtube id="hMH2bYKbGgE", file="ee 11 wine out-of-sample prediction.mp4"
+
+#< quiz "predict_price"
+question: |
+  Can we use our estimated model to predict log price indices for new data points for which we only know the weather variables but not the price?
+sc:
+  - Yes*
+  - No
+#>
+
+
+Great, you have finished the video lectures for Chapter 1! 
+
+Now would be a great time to start with the RTutor problem set of this chapter.

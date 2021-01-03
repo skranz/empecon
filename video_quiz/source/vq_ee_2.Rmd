@@ -1,0 +1,197 @@
+#< ignore
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, error=TRUE, dev="svg")
+library(miniMOOC)
+preview_mooc_rmd("vq_ee_2.Rmd", youtube.width=720)
+
+mm = miniMOOC::parse_mooc_rmd("vq_ee_2.Rmd",youtube.width = 720)
+saveRDS(mm, "vq_ee_2.Rds")
+```
+#>
+
+#. section
+
+Videos and questions for Chapter 2 of the course "Empirical Economics with R" at Ulm University (taught by Sebastian Kranz)
+
+### Machine Learning
+  
+#. youtube id="kSfRcW_EOQA", file="ee 2-1.mp4"
+
+#< quiz "poly_train"
+question: |
+  Which model will make the *best* predictions for the *training data set*?
+sc:
+  - The linear model
+  - The quadratic model
+  - The octic model*
+#>
+
+#. youtube id="u9U3DpxcMz8", file="ee2-2.mp4"
+
+#< quiz "poly_test"  
+question: |
+  Which model will make the *worst* predictions for the *test data set*? Make a guess...
+sc:
+  - The linear model
+  - The quadratic model
+  - The octic model*
+#>
+
+#. youtube id="tAohgQF4-ZY", file="ee2-3.mp4"
+
+
+#< quiz mae_formula
+question: |
+  One popular measure to quantify the prediction inaccuracy of a model is the **Mean Absolute Error (MAE)**. Based on this name, make a guess about the precise formula for the MAE.:
+sc:
+  - \(MAE = \frac {1} {n} \sum_{i=1}^n (\hat y_i - y_i)\)
+  - \(MAE = \frac {1} {n} \sum_{i=1}^n |\hat y_i - y_i|\)*
+  - \(MAE =  \sum_{i=1}^n |\hat y_i - y_i|\)
+  - \(MAE = \sum_{i=1}^n (\hat y_i - y_i)^2\)
+success: |
+  Correct. The word *absolute* means that we take the absolute value of the difference between the predicted and true values of $y$, i.e. $|\hat y_i - y_i|$. The word *mean* means that we take the average of this absolute value for all observations. 
+#>
+
+#< quiz rmse_formula
+question: |
+  Another popular measure to quantify the prediction inaccuracy of a model is the **Root Mean Squared Error (RMSE)**. Make a guess about its formula:
+sc:
+  - \(RMSE = \frac {1} {n} \sum_{i=1}^n \sqrt{(\hat y_i - y_i)^2}\)
+  - \(RMSE = \sqrt{\frac {1} {n} \sum_{i=1}^n (\hat y_i - y_i)^2}\) *
+success: |
+  Correct. In the (wrong) first formula, we find that $\sqrt{(\hat y_i - y_i)^2}$ just simplifies to $|\hat y_i - y_i|$, i.e. the first formula is actually equivalent to the MAE. But the RMSE formula is the 2nd option.
+#>
+
+#. youtube id="SYS6QojRWfU", file="ee2-4.mp4"  
+
+
+For our three models, we find the following RMSE on the training and test data sets:
+
+#< tab
+RMSE, linear, quadratic, octic
+<b>training data</b>, 0.200, 0.117, 0.077
+<b>test data</b>,  0.190, 0.120, 0.268
+#>
+
+#< quiz rmse_which_model
+question: |
+  Based on the RMSE in the table above, which model would be considered the best according to the standard machine learning approach?
+sc:
+  - The linear model
+  - The quadratic model*
+  - The octic model
+success: |
+  Correct. The main criterion in machine learning is the out-of-sample prediction accuracy. This means we look at the results for the *test* data set, not the training data set. A lower RMSE means the model makes better predictions. Since the quadratic model has the lowest RMSE for the test data set, it would be considered the best model in the standard machine learning approach. 
+#>
+
+
+#. youtube id="_VQvI6N3uyk", file="ee2-5.mp4"
+
+#. section
+
+### Regression Trees
+
+#. youtube id="G8tjQ9GHgpI", file="ee-2-6.mp4"
+
+Take a look at the estimated regression tree from our slides: 
+
+#. img file="figures/tree.svg", style="max-width: 90%"
+
+#< quiz "regtree_pred1"
+question: |
+  What is the predicted price (in 1000 Euro) for a car registered in 2005 with a horse power of 250?
+sc: 
+  - 2.73
+  - 12.9*
+  - 4.97
+  - 3.23
+#>
+
+#< quiz "regtree_pred2"
+question: |
+  What is the share of cars registered before 2006?
+sc:
+  - 62.9%
+  - 3.23%
+  - 66.1%*
+  - We cannot see from the tree.
+#>
+
+
+#< quiz "regtree_pred3"
+question: |
+  What is the share of cars with fewer than 224 PS?
+sc:
+  - 62.9%
+  - 3.23%
+  - 66.1%
+  - We cannot see from the tree.*
+success: |
+  Correct. While we know that the share of cars that has been registered before 2016 and has less than 224 PS is 62.9%, we don't know the share of cars less than 224 PS that have been registered after 2016.
+#>
+
+### Estimating a regression tree
+
+NOTE: The following videos have been recycled from another course of mine. Therefore the numbers in the lecture slides and references to the exercises and in the videos don't fit.
+
+
+#. youtube id="3QJxql2SrVM", file="2b Computing a Regression Tree.mp4"
+
+
+Remark: Take a look at the lecture slides to see how a split for a nominal variable is computed.
+
+### Optional: Regression trees and dummy variable regression
+
+The following content is not relevant for the exam. 
+
+#. youtube id="SglHUrS3Ruk", file="2b Regression Trees and Dummy Variable Regressions.mp4"
+
+#. section
+### Random forests
+
+#. youtube id="u8VO9ftsUQM", file="2b Random Forests and Gradient Boosted Trees.mp4"
+
+#< quiz "random"
+question: |
+  What are the random elements in a random forest? (Make a guess)<br>
+  A: Each tree is estimated with a data set that is randomly drawn with replacement from the training data set.<br>
+  B: We estimate several trees but pick a random subset of trees for the prediction.<br>
+  C: When training a tree, at each node only a random subset of variables is considered for the optimal split.
+sc: 
+  - Just A
+  - A and B
+  - A and C*
+  - A, B and C
+#>
+
+#. youtube id="GzkWfIUmlMw", file="2b Random Forests.mp4"
+
+
+#. section 
+
+### Hyperparameter Tuning & Cross Validation
+
+#. youtube id="brUIoEIfxwA", file="ee2-hyper1.mp4"
+
+Consider the following proposal to tune the hyperparameter `cp` of a regression tree:
+
+1. We define a grid of different candidate values for `cp` like `10, 5,2,1, 0.5,0.2,0.1, ...`.
+
+2. We then estimate for each value of `cp` a regression tree on the *training data set* and assess the prediction quality on the *test data set*.
+
+3. We then pick that value of the hyperparameter `cp` which yields the lowest RMSE (or MAE) on the test data set. (We can also possibly refine the grid around the optimal value of `cp` and search again.)
+
+#< quiz "hyper_hyper"
+question: |
+  Which assessment do you think is commonly shared by machine learning experts about the method above?
+sc:
+  - The method above would not work at all.
+  - The method above would work in principle, but it is problematic to use the test data set to compare a lot of hyperparameters.*
+  - The method above works fine and is one of the default approaches for hyperparameter tuning in machine learning.
+#>
+
+#. youtube id="ytmqkNe8RBw", file="ee2-hyper2.mp4"
+
+### k-Crossfold Validation
+
+#. youtube id="DdyLzhQJl-4", file="ee2-hyper3.txt"

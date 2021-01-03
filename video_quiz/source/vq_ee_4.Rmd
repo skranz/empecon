@@ -1,0 +1,112 @@
+#< ignore
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, error=TRUE, dev="svg")
+library(miniMOOC)
+preview_mooc_rmd("vq_ee_4.Rmd", youtube.width=720)
+
+mm = miniMOOC::parse_mooc_rmd("vq_ee_4.Rmd",youtube.width = 720)
+saveRDS(mm, "vq_ee_4.Rds")
+```
+#>
+
+#. section
+
+Videos and questions for Chapter 4 of the course "Empirical Economics with R" at Ulm University (taught by Sebastian Kranz)
+
+
+### Search Engine Advertisement
+
+#. youtube id="jjdD9x2iwRk", file="ee4-1.mp4"
+
+We will look at an experiment to study the impact of search engine advertisement for eBay in the US.
+#< quiz "exp_variant"
+question: |
+  Below are two variants of the experimental design. One could say that the "cleaner" design has been chosen. Make a guess which one:
+sc:
+  - For a certain time period eBay stopped search engine marketing in the complete US.
+  - For a certain time period eBay stopped search engine marketing in some regions in the US.*
+success: |
+  Correct. Only treating a subset of the regions allows us to have a treatment and control group.
+#>
+
+#. youtube id="nEcpTdcxlG0", file="ee4-2.mp4"
+
+#< quiz "randomized_or_not"
+question: |
+  Were the treated DMA's be perfectly randomly chosen? Make an educated guess.
+sc:
+  - Yes
+  - No*
+success: |
+  Correct. While the answer cannot be cleanly determined by looking at the graphs, the average revenues in the control group seem substantially larger than those in the treatment group (relative to weekday fluctuations and the difference between pre-treatment and treatment period). Given a sufficiently large sample sizes, such imbalances are suggestive for imperfect randomization.
+#>
+
+#. youtube id="vtqvJBppYuk", file="ee4-3.mp4"
+
+Here is again the graph of the experimental results:
+
+<center>
+#. img file="figures/ebay_exp.svg", style="width: 40em; max-width:90%;"
+</center>
+
+#< quiz "d_vs_did"
+question: |
+  What would be a "good" estimator of the treatment effect of the experiment of turning off search engine marketing on average daily revenues per DMA (in 1000 USD)?
+sc:
+  - \(100.7-128.7=-28\)
+  - \(100.7-105.8 = -5.1\)
+  - \((100.7-128.7) - (105.8-132.4) = -28 - (-26.6) = -1.4\)*
+success: |
+  Correct. As the next video explains, this is the so called difference-in-difference (DiD) estimator.
+#>
+
+#. youtube id="Li_-su7lYYs", file="ee4-4.mp4"
+
+#. section 
+
+### DiD estimation via linear regression
+
+#. youtube id="Zg6fT52wCdY", file="ee4-5.mp4"
+
+So assume instead of the DiD regression
+
+$$rev_{i,t} = \beta_0 + \beta_1 treat_i \cdot exp_t + \beta_2 treat_i + \beta_3 exp_t + u_{i,t}$$
+
+we would only estimate the shorter regression where we ommit $treat_i$
+
+$$rev_{i,t} = \beta_0 + \beta_1 treat_i \cdot exp_t + \beta_3 exp_t + \varepsilon_{i,t}$$
+
+#< quiz "did_shorter"
+question: |
+  Make a guess how our estimator $\hat \beta_1$ changes in the shorter regression. (Best draw a causal graph and put plus-minus signs on the arrows to assess which additional effect $\hat \beta_1$ estimates in the shorter regression.)
+sc:
+  - \(\hat \beta_1\) becomes smaller (i.e. larger negative)*
+  - \(\hat \beta_1\) stays the same
+  - \(\hat \beta_1\) becomes larger (i.e. smaller negative)
+#>
+
+#. youtube id="33arig9fsMk", file="ee4-6.mp4"
+
+### Fixed Effects Estimator
+
+#. youtube id="fM5qtFvKctM", file="ee4-7.mp4"
+
+### Cluster-Robust Standard Errors
+
+#. youtube id="3HibzXR_hxo", file="ee4-8.mp4"
+
+#. section
+
+### Discussion: The Effects of Search Engine Marketing
+
+#. youtube id="XmpJWcXg1GA", file="ee4-9.mp4"
+
+#. section
+
+### The parallel trends assumption
+
+
+#. youtube id="zgu7UKP50jg", file="ee4-10.mp4"
+
+<br>
+Great, you have finished the video lectures for Chapter 4. Now would be a good time to start with the RTutor problem set in order to perform some DiD estimation yourself.

@@ -1,0 +1,203 @@
+#< ignore
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, error=TRUE, dev="svg")
+library(miniMOOC)
+preview_mooc_rmd("vq_ee_5.Rmd", youtube.width=720)
+
+mm = miniMOOC::parse_mooc_rmd("vq_ee_5.Rmd",youtube.width = 720)
+saveRDS(mm, "vq_ee_5.Rds")
+```
+#>
+
+#. section
+
+Videos and questions for Chapter 5 of the course "Empirical Economics with R" at Ulm University (taught by Sebastian Kranz)
+
+
+### A large scale job counseling experiment
+
+#. youtube id="GpkO7R_425w", file="ee5-1.mp4"
+
+#< quiz "percent_accept"
+question: |
+  Make a guess which percentage of the job seekers who got the option for intensive counselling accepted it?
+sc:
+  - 31.7%*
+  - 61.7%
+  - 91.7%
+#>
+
+#. youtube id="p21lP-6Sbv0", file="ee5-2.mp4"
+
+#< quiz "treat_biassed"
+question: |
+  Consider the regression $$\text{job_6m}_i = \beta_0 + \beta_1 \text{treated}_i + u_i$$
+  Is our estimator $\hat \beta_1$ likely a consistent estimator of the effect of job counseling on those who received treatment?
+sc:
+  - Most economists would say yes, because a randomized experiment was conducted.
+  - Most econmists would say no.*
+#>
+
+#. youtube id="GxgUirKGCj0", file="ee5-3.mp4"
+
+
+In the following two quizzes let us consider two stories that could yield a bias in $\hat \beta_1$ in the regression:
+
+$$\text{job_6m}_i = \beta_0 + \beta_1 \text{treated}_i + u_i$$
+
+#< quiz "bias_story1"
+question: |
+  Assume the that only those job seekers reject intensive counseling who can easily find themselves a good new job.
+sc:
+  - \(\hat \beta_i\) would then have a negative bias.*
+  - \(\hat \beta_i\) would then have a positive bias.
+success: |
+  Correct. Job seekers who can easily find a new job would have a positive error term $u_i$, and if they systematically reject the treatment, we would have $cor(\text{treated}_i + u_i) < 0$. We know from the bias formula that in a regression with a single explanatory variable the sign of the (asymptotic) bias is the same as the sign of correlation between the explanatory variable and the error term. Hence, $\hat \beta_1$ would have a negative bias and likely $\hat \beta_1 < \beta_1$.
+#>
+
+#< quiz "bias_story2"
+question: |
+  Assume the that only those job seekers reject intensive counseling who are demotivated and generally have low chances to find a new job.
+sc:
+  - \(\hat \beta_i\) would then have a negative bias.
+  - \(\hat \beta_i\) would then have a positive bias.*
+success: |
+  Correct. Job seekers with low chances to find a new job would have a negative error term $u_i$, and if they systematically reject the treatment, we would have $cor(\text{treated}_i + u_i) > 0$. We know from the bias formula that in a regression with a single explanatory variable the sign of the (asymptotic) bias is the same as the sign of correlation between the explanatory variable and the error term. Hence, $\hat \beta_1$ would have a positive bias and likely $\hat \beta_1 > \beta_1$.
+#>
+
+#. section
+
+## Instrumental Variable Estimation
+
+#. youtube id="59pnTwxqoZ8", file="ee5-4.mp4"
+
+Consider again our regression $$\text{job_6m}_i = \beta_0 + \beta_1 \text{treated}_i + u_i$$
+
+and let the dummy variable $\text{treat_option}_i$, which indicates whether subject $i$ had the option for intensive counseling, be the instrument for $\text{treated}_i$.
+
+#< quiz "iv_1"
+question: |
+  What is the exogeneity condition for the instrument in our example?
+sc:
+  - \(cor(\text{treated}_i,\text{treat_option}_i) =0\)
+  - \(cor(\text{treated}_i,\text{treat_option}_i) \ne 0\)
+  - \(cor(\text{treated}_i,u_i) = 0\)
+  - \(cor(\text{treat_option}_i,u_i) = 0\)*
+#>
+
+#< quiz "iv_2"
+question: |
+  Is the exogeneity condition for the instrument $\text{treat_option}_i$ satisfied in our application if we assume that subjects' assignment to treatment and control group was perfectly randomized?
+sc:
+  - Yes*
+  - No
+#>
+
+
+#< quiz "iv_3"
+question: |
+  What can we say about the relevance condition for the instrument $\text{treat_option}_i$ in our application?
+sc:
+  - Satisfied, since \(cor(\text{treated}_i,\text{treat_option}_i) < 0\)
+  - Satisfied, since \(cor(\text{treated}_i,\text{treat_option}_i) > 0\)*
+  - Not satisfied, since \(cor(\text{treated}_i,\text{treat_option}_i) = 0\)
+#>
+
+#. youtube id="oTquVVUcPts", file="ee5-5.mp4"
+
+### IV Estimation via Two-Stage Least Squares
+
+#. youtube id="UHCtEd_r3Yg", file="ee5-6.mp4"
+
+### Direct IV estimation
+
+#. youtube id="3t7aCbQ8plY", file="ee5-7.mp4"
+
+### IV estimation with more than one instrument and with control variables
+
+#. youtube id="H5Z8oQkeOcw", file="ee5-8.mp4"
+
+#. section
+
+### IV estimation in our job counseling application
+
+#. youtube id="3yRmzArLLxQ", file="ee5-9.mp4"
+
+We found an IV estimator of $\hat \beta_1 = 0.102$ and a lower OLS estimator of just $\hat \beta_1 = 0.079$. 
+
+#< quiz "ols_vs_iv_story"
+question: |
+  Comparing the OLS estimator, which story seems on average more consistent with some subjects' decision to reject the intensive counseling?
+sc:
+  - Mainly those job seekers reject intensive counseling who can easily find themselves a good new job.*
+  - Mainly those job seekers reject intensive counseling who have low chances to find a new job.
+success: |
+  Correct. The lower value of the OLS estimator suggests that the OLS estimator has a negative bias. A negative bias means that in the OLS regression $$\text{job_6m}_i = \beta_0 + \beta_1 \text{treated}_i + u_i$$ we have a negative correlation between $\text{treated}_i$ and the error term $u_i$. The interpretation of such a negative correlation is that on average rather people with a higher chance to find a job (large $u_i$) are less likely to accept the intensive counseling treatment.
+#>
+
+#. youtube id="6B_Lp_fVCto", file="ee5-10.mp4"
+
+### Excursion: Should we worry about the small R-squared in the regressions?
+
+#. youtube id="sTte8oEIrZc", file="ee5-r-squared.mp4"
+
+Note: At around 5 minutes 30 seconds, I say "increase by 10 percent", where of course it should be "increase by 10 percentage points", one should always be careful with this distinction...
+
+#. section
+
+### Which average treatment effect does our IV estimator estimate?
+
+#. youtube id="IlDp4MkyXJw", file="ee5-11.mp4"
+
+### The Rubin causal model and average treatment effects 
+
+#. youtube id="lyoDbw7vkMo", file="ee5-12.mp4"
+
+### IV estimator estimates local average treatment effect (LATE)
+
+#. youtube id="F9NFoP20ZL0", file="ee5-13.mp4"
+
+#. section 
+
+### Not perfectly randomized treatment allocation
+
+#. youtube id="GQAnNsrkxhY", file="ee5-14.mp4"
+
+#< quiz "which_condition_violated"
+question: |
+  Which condition would our instrument violate in the short IV regression given the problem explained in the video?
+sc:
+  - The exogeneity condition.*
+  - The relevance condition.
+success: |
+  Correct. If we estimate $$\text{job_6m} = \beta_0 + \beta_1 \text{treated} + u$$ via IV with `treat_option` as instrument, then `treat_option` would not satisfy the exogeneity condition. If the `region` affects the chance to find a job, it is part of the error term `u` in our regression and we have $cor(\text{treat_option}_i, u_i) \ne 0$
+#>
+
+#< quiz "iv_and_fixed_effects"
+question: |
+  Could we, in principle, solve the problem by adding region specific fixed effects to our IV regression?
+sc:
+  - No, one cannot add fixed effects to an IV regression.
+  - Yes, as least as long as we assume a homogeneous treatment effect.*
+success: |
+  Correct. We have already explained in the slides that one can add control variables to an IV regression. Region specific fixed effects can be modeled by just adding region dummies as control variables.
+#>
+
+### Region fixed effects or "inverse probability weighting"?
+
+#. youtube id="9qtp0zZK4S8", file="ee5-15.mp4"
+
+### An example to motivate inverse probability weighting
+
+#. youtube id="fXKOYbcwAvI", file="ee5-16.mp4"
+
+### 4 regressions for our inverse probability weighting example and discussion
+
+#. youtube id="2AcL28xKCvs", file="ee5-17.mp4"
+
+### Back to our job-counseling application
+
+#. youtube id="GY3qGAlCzUY", file="ee5-18.mp4"
+
+<br>
+Great, you have finished the video lectures for Chapter 5. Now would be a good time to start with the RTutor problem set in order to perform some IV estimation yourself.

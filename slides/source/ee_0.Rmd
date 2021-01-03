@@ -1,0 +1,135 @@
+#< ignore
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, error=TRUE)
+```
+#>
+
+#. include slide_defaults.rmd
+
+
+#. frame
+<center>
+<h2> Empirical Economics with R </h2>
+<h2> Overview</h3>
+
+<h3> Uni Ulm</h3>
+<h3> Prof. Dr. Sebastian Kranz </h3>
+<h3> WiSe 20/21</h3>
+</center>
+
+#. frame Course Overview
+
+- We will look in detail at several empirical economic applications, e.g.
+
+  - Develop a simple formula to predict future prices of Bordeaux red wines
+
+  - Estimate a complex machine learning model to predict house prices
+
+  - Evaluate the effect of minimum wages on employment
+  
+  - Assess the revenue impact of search engine marketing
+  
+  - ...
+  
+- Based on those and other applications we learn and dig deeper into methods like linear regression, machine learning with random forests, difference-in-difference estimation or instrumental variable estimation.
+
+- The course extends your introductory statistics classes.
+
+#. frame Organisation
+
+-   Lecturer: Prof. Dr. Sebastian Kranz (sebastian.kranz@uni-ulm.de)
+
+-   Teaching Assistant: Theresa Gräfe (theresa.graefe@uni-ulm.de)
+
+-   All teaching material can be found on Moodle.
+  
+  - Youtube videos will be prepared that can be viewed anytime.
+  
+  - There will also be some live question and answer sessions via BBB.
+  
+
+#. frame R
+
+- We will extensively use the statistical programming language R in this class
+
+- You will learn a lot of skills and tricks that are generally useful beyond this class and beyond your time as student
+
+- You don’t need previous knowledge in R but you should be willing to learn it and solve exercises on your computer
+
+- We will use R together with **RStudio** in this class
+
+  - RStudio is a convenient IDE that facilitates working with R
+
+- Both R and RStudio are open source programs and are freely available.
+
+- Please follow the course-specific instructions for installation and set-up on Moodle.
+
+
+#. frame Interactive RTutor Problem Sets
+
+- During the course, you will be asked to solve and hand in, several interactive RTutor problem sets.
+
+  - They are based on the package RTutor
+
+  - You can immediately check your solution, get automatic feedback and can ask for hints.
+
+  - The goal is to provide a fun and effective way to learn R and the contents of this course
+
+- Some contents of the course are only introduced via RTutor problem sets. Working through them is absolutely crucial for this course.
+
+- The problem sets count a total of 10% of your final grade
+
+#. frame Further Ressources to Learn R
+
+- If you are a complete beginner to R, you may want to take a look at some further resources to learn R. There is a huge amount of free teaching material. Here are just some links:
+
+- https://education.rstudio.com/learn/beginner/
+
+- https://rstudio.cloud/learn/primers
+
+- https://www.datacamp.com/courses/free-introduction-to-r
+
+#. frame Final Exam
+
+- The final exam will determine 90% of your grade (the remaining 10% are the RTutor problem sets)
+
+- If the class is sufficiently large, there will be a written exam
+
+  - Questions will be in English but you can answer in English or German
+
+- If the class is not too large, there may be an oral exam (mündliche Prüfung)
+
+  - You can freely decide whether you want to take the exam in English or German
+
+#. frame Questions:
+
+- On the Moodle page of the course is a Question and Answer forum. Please try to post your question there if there is a chance that it is also of interest to other students (which is the case for almost all questions.)
+
+- In other cases send an email. We can then schedule a time to discuss the question via Webex.
+
+
+#. frame Optional Textbooks 
+
+- Jeffrey Wooldridge: "Introductory Econometrics"
+
+  - A classic textbook to learn about classic econometrics. Does not cover machine learning methods.
+
+- Matt Taddy: "Business Data Science"
+  
+  - A very nice modern overview of econometric and machine learning techniques for business relevant decisions. Book uses many R examples.
+
+- Hank et. el.: "Econometrics with R"
+
+  - https://www.econometrics-with-r.org/
+  
+  - A modern, nice and free online textbook
+
+
+#. frame Is it the right course for me?
+
+- You learn a lot, but also have to invest considerably time and effort.
+
+- If you are not sure, just try out the course and see if you like it.
+
+
+

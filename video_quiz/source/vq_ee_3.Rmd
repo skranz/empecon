@@ -1,0 +1,391 @@
+#< ignore
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, error=TRUE, dev="svg")
+library(miniMOOC)
+preview_mooc_rmd("vq_ee_3.Rmd", youtube.width=720)
+
+mm = miniMOOC::parse_mooc_rmd("vq_ee_3.Rmd",youtube.width = 720)
+saveRDS(mm, "vq_ee_3.Rds")
+```
+#>
+
+#. section
+
+Videos and questions for Chapter 3 of the course "Empirical Economics with R" at Ulm University (taught by Sebastian Kranz)
+
+
+### Overview and a first regression
+
+#. youtube id="W4LZ30dDmM0", file="ee 3-1.mp4"
+
+#< quiz "error_or_not"
+question: |
+  Will the code `lm(exam ~ homework)` in the video run without error?
+sc:
+  - Yes
+  - No, it will throw an error.*
+success: |
+  Correct. So do you also know what mistake I made?
+#>
+
+#. youtube id="K3z3P-_waJw", file="ee 3-2.mp4"
+
+#< quiz "error_or_not2"
+question: |
+  Will the code `lm(y ~ x)` in the video run without error?
+sc:
+  - Yes*
+  - No, it will throw an error.
+#>
+
+#. youtube id="yzMCyqroLH4", file="ee 3-3.mp4"
+
+#< quiz "se_and_n"
+question: |
+  If we increase the sample size $n$ from 20 to 80. How will then approximately change the standard deviation (standard error) of our OLS estimator $\hat \beta_1$?
+sc:
+  - It becomes 4 times as large.
+  - It stays the same.
+  - It shrinks to one quarter of its original size.
+  - It shrinks to half of its original size.*
+#>
+
+#. youtube id="I5dUXoCJKts", file="ee 3-4.mp4"
+
+#< quiz "se_and_sd_u"
+question: |
+  How will the standard error of $\hat \beta_1$ change if we increase the standard deviation $sd(u)$ of our error term?
+sc:
+  - The standard error \(se(\hat \beta_1)\) becomes smaller.
+  - The standard error \(se(\hat \beta_1)\) becomes larger.*
+#>
+
+#< quiz "se_and_sd_x"
+question: |
+  How will the standard error of $\hat \beta_1$ change if we increase the standard deviation $sd(x)$ of the explanatory variable $x$?
+sc:
+  - The standard error \(se(\hat \beta_1)\) becomes smaller.*
+  - The standard error \(se(\hat \beta_1)\) becomes larger.
+#>
+
+#. youtube id="AdhC-rEiEFw", file="ee 3-5.mp4"
+
+#< quiz "se_single"
+question: |
+  Assume we have only a single sample with $n$ observations. Can we get from a single sample a sensible estimation of the standard error of $\hat \beta_1$?
+sc:
+  - Yes, if we make some assumptions on the data generating process.*
+  - No. Because with a single sample we can compute only one value of the estimator \(\hat \beta_1\).
+#>
+
+#. youtube id="BNY-nR_3iXo", file="ee 3-6.mp4"
+
+#< quiz "se_and_sample_size"
+question: |
+  As the sample size grows large, will the estimate $\hat \beta_1$ converge (in probability) against the true value $\beta_1$ in our example? Make a guess.
+sc:
+  - Yes.*
+  - No. From some point on additional observations won't help anymore to filter out the noise from the error term $u$.
+success: |
+  Correct. You could already see from the formula for the standard error in the video above that the standard error of $\hat \beta_1$ will converge to zero, i.e. our estimator gets more and more precise as our sample size $n$ grows large. Note that sometimes in these quizzes, I may try to formulate the answers in a way to trick you. I thought: hey let me write a bit more explanation for the "No" answer. Some people then probably think that is the right one just because I wrote a longer text. Did it work? Perhaps, I should extend the software for these quizzes such that I could randomize which answer options were chosen. Then I could run a randomized experiment and test whether a short "No" answer is chosen more or less often than then long "No" answer here...
+#>
+
+#. youtube id="QzNvzg82Lsw", file="ee 3-7.mp4"
+
+#. section 
+
+### Confidence intervals, t-values, p-values and significance stars
+
+#. youtube id="GmIYW6HrA70", file="ee 3-8.mp4"
+
+#. section Causal effects and confounders
+
+#. youtube id="d0-sPgigvxs", file="ee 3-9.mp4"
+
+We found the following regression result:
+
+#< tab
+term,estimate,std.error,statistic,p.value,conf.low,conf.high
+(Intercept),22.7,0.842,27,2.89e-109,21.1,24.4
+homework,0.449,0.117,3.84,1.34e-4,0.22,0.679
+#>
+
+#< quiz "causal_ci"
+question: |
+  Does that mean we are 95% confident that submitting an additional homework problem set *causes* an increase in the average exam score between 0.22 and 0.679?
+sc:
+  - Probably yes
+  - Probably no.*
+success: |
+  Correct. The problem is that here the coefficient of the best linear predictor $\beta_1^*$ probably does not measure the causal effect of an additionally submitted homework on the exam score. We will explain this in more detail below.
+#>
+
+#. youtube id="CWQdZMNBO2I", file="ee 3-10.mp4"
+
+We run the following simulation:
+```{r eval=FALSE}
+n = 10000
+alpha0 = 0; alpha1 = 1; alpha2 = 1
+u = rnorm(n,0,1)
+x2 = rnorm(n,0,1)
+x1 = x2+rnorm(n,0,1)
+y = alpha0 + alpha1*x1 + alpha2*x2 + u
+```
+
+#< quiz "is_alpha1_causal"
+question: |
+  Does `alpha1=1` measure the causal effect from `x1` on `y` in our simulation?
+sc:
+  - Yes*
+  - No
+success: |
+  Correct. If we increase `x1` by one unit and leave `x2` and `u` constant, then `y` will increase by `alpha1` units. That is the typical definition for a causal effect.
+#>
+
+One can draw the causal relationships in the data generation process above as follows:
+
+#. img file="figures/x1x2_confound.svg", style="max-width: 90%; max-height: 80vh;"
+
+Now assume we estimate the short regression:
+
+$$y = \beta_0 + \beta_1 x_1 + \varepsilon$$
+
+#< quiz "converge_to_alpha1"
+question: |
+  Will for a large sample size the OLS estimator $\hat \beta_1$ of the short regression converge to the causal effect $\alpha_1$ of $x_1$ on $y$ in our example? In other words is in the short regression $\beta_1^* = \alpha_1$?
+sc:
+  - Yes
+  - No*
+#>
+
+#. youtube id="pkSd6oAeZbk", file="ee 3-11.mp4"
+
+Still assume that we generate the data with our simulation and estimate the short regression:
+
+$$y = \beta_0 + \beta_1 x_1 + \varepsilon$$
+
+#< quiz "short_consistent"
+question: |
+  Is the OLS $\hat \beta_1$ a consistent estimator of the causal effect $\alpha_1=1$ of $x_1$ on $y$ in our example?
+sc:
+  - Yes
+  - No and \(\hat \beta_1\) has a negative bias.
+  - No and \(\hat \beta_1\) has a positive bias.*
+success: |
+  Correct. It is like the previous quiz only that we now used the word *consistent* and bias. Since $\hat \beta_1$ also captures the indirect positive relationship between $x_1$ and $y$ via $x_2$, we have $E(\hat \beta_1) > \alpha_1$. This means $\hat \beta_1$ estimates the causal effect inconsistently with a positive bias.
+#>
+
+
+Now assume we would estimate the long regression:
+
+$$y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \eta$$
+#< quiz "long_consistent"
+question: |
+  Is the OLS estimator $\hat \beta_1$ of the long regression a consistent estimator of the causal effect $\alpha_1=1$ of $x_1$ on $y$ in our example?
+sc:
+  - Yes*
+  - No and \(\hat \beta_1\) has a negative bias.
+  - No and \(\hat \beta_1\) has a positive bias.
+success: |
+  Correct. In the long regression we control for the confounder `x2` and the OLS estimator $\hat \beta_1$ consistently estimates the causal effect $\alpha_1$. You can copy the simulation code and estimate the long regression yourself in R to verify that this is indeed the case.
+#>
+
+
+#< quiz "short_beta1"
+question: |
+  Assume we estimate again the short regression $y = \beta_0 + \beta_1 x_1 + \varepsilon$. Is the OLS estimator $\hat \beta_1$ a consistent estimator of $\beta_1$?
+sc:
+  - Yes
+  - No
+  - It depends on how we define \(\beta_1\).*
+success: |
+  Correct. If we say the $\beta_1$ in the regression equation shall be the causal effect of $x_1$ on $y$, then $\hat \beta_1$ would be inconsistent. If we say $\beta_1$ shall just be the coefficient of the best linear predictor $\beta_1^*$ then, $\hat \beta_1$ would be consistent. Unfortunately, we cannot see just from a regression equation whether we assume the "true coefficient" to be a particular causal effect or not. We need some more information, either stated verbally, with a causal graph or by using the so called *potential outcomes* framework that we will look at later in the course.
+#>
+
+#. youtube id="8d0i4sOi2Zw", file="ee 3-12.mp4"
+
+#. section Asymptotic Bias and Endogeneity
+
+#. youtube id="kd32vkfCpcc", file="ee 3-13.mp4"
+
+### Causal graphs and endogeneity
+
+#. youtube id="gqRrMBFeQ5s", file="ee 3-14.mp4"
+
+### Bias of OLS estimator in the homework exapmle
+
+#. youtube id="cpeBK9TdKRs", file="ee 3-15.mp4"
+
+
+#. section Controlling with Proxy Variables
+
+#. youtube id="EBPpUWhcukg", file="ee 3-16.mp4"
+
+#< quiz "short_beta2"
+question: |
+  What do you think is the opinion of your lecturer?
+sc:
+  - If we add a student's average grade from previous semester as control variable it seems reasonable that not too much bias is left in our OLS estimator \(\hat \beta_1\).
+  - It is not unlikely that we still have a large positive or negative bias.*
+#>
+
+#. youtube id="12cChlBwxL4", file="ee 3-17.mp4"
+
+#< quiz "add_proxy_bias"
+question: |
+  Make a guess what happens with the bias of $\hat \beta_1$ if we add the noisy proxy (compared to the short regression without proxy).
+sc:
+  - The bias will roughly stay the same.
+  - The bias will go down but the estimator remains biased.*
+  - The estimator becomes unbiased.
+#>
+
+#. youtube id="jUlYehcGUw4", file="ee 3-18.mp4"
+
+#< quiz "less_noisy_proxy_bias"
+question: |
+  How will our bias of $\hat \beta_1$ in our regression with the proxy variable change if the standard deviation in the noise of the proxy variable goes down? Make a guess.
+sc:
+  - The bias will go down.*
+  - The bias will roughly stay the same.
+  - The bias will go up.
+#>
+
+#. youtube id="SWE8T7pfqt0", file="ee 3-19.mp4"
+
+#< quiz "less_exo_variation_bias"
+question: |
+  How will the bias of $\hat \beta_1$ in our regression change if reduce the standard deviation of the sources of exogenous variation in `x1`? Make a guess.
+sc:
+  - The bias will go down.
+  - The bias will roughly stay the same.
+  - The bias will go up.*
+#>
+
+#. youtube id="yenF6N4z1LA", file="ee 3-20.mp4"
+
+#< quiz "almost_no_exo1"
+question: |
+  What about the bias of $\hat \beta_1$ if we have a very precise proxy but also almost no exogenous variation in `x1`?
+sc:
+  - The bias will be almost zero.
+  - We still can have a substantial bias.*
+#>
+
+#. youtube id="q9j9E-QgXoM", file="ee 3-21.mp4"
+
+### Are there sources of exogenous variation in our homework example?
+
+#. youtube id="Gi3W2i7lfPE", file="ee 3-22.mp4"
+
+#. section
+
+### The causal effects of education
+
+#. youtube id="HPYwnVVi0Bo", file="ee 3-23.mp4"
+
+#< quiz "almost_no_exo2"
+question: |
+  Assuming intelligence is the main confounder and we have some sources of exogenous variation. How would we expect the estimator $\hat \beta_1$ for the causal effect of `edu` to change if we add the IQ score as control variable?
+sc:
+  - \(\hat \beta_1\) should go down.*
+  - \(\hat \beta_1\) should go up.
+success: |
+  Correct. Likely, more intelligent people would get higher wages with the same amount of education but also like to achieve higher educational degrees. Intelligence positively affects `edu` and also positively affects the error term $\varepsilon$ in our short regression $$wage = \beta_0 + \beta_1 edu + \varepsilon$$. This means `edu` would be positively correlated with the error term and in the short regression $\hat \beta_1$ would have a positive bias. Adding the IQ test score as a proxy variable should reduce that bias.
+#>
+
+#. youtube id="9Ycm0cZsP9I", file="ee 3-24.mp4"
+
+#. section
+
+### Randomized Experiments
+
+#. youtube id="Ye2UogWmCcI", file="ee 3-25.mp4"
+
+Here are the results of our 3 regressions:
+
+```{r results="asis", echo=FALSE}
+library(stargazer)
+library(wooldridge)
+data(apple)
+reg1 = lm(ecolbs ~ ecoprc, data=apple)
+reg2 = lm(ecolbs ~ ecoprc+regprc, data=apple)
+reg3 = lm(ecolbs ~ ecoprc+regprc+male+inseason+hhsize+age+faminc, data=apple)
+
+stargazer(reg1,reg2,reg3, type = "html",omit.stat = c( "f","adj.rsq","ser"))
+```
+
+
+<br>
+Here are 5 quiz questions related to these regression results. You can find more detailed explanations of the answers in the lecture slides.  
+<br>
+#< quiz "apples_a1"
+question: |
+  a) Part 1: If we have a well randomized experiment, is then the OLS estimator in our second regression $ecolbs = \beta_0 + \beta_1 ecoprc + \beta_2 regprc + u$ consistent?
+sc: 
+  - Yes*
+  - No
+success: |
+  Correct. See the lecture slides for more detailed explanations of the answers.
+#>
+
+#< quiz "apples_a2"
+question: |
+  a) Part 2: Are the signs of $\hat \beta_1 < 0$ and $\hat \beta_2 > 0$ consistent with what we would expect from economic theory?
+sc: 
+  - Yes*
+  - No
+success: Correct. See the lecture slides for more detailed explanations of the answers.
+#>
+
+
+#< quiz "apples_b"
+question: |
+  b) If we don't add `regprc` (see first regression) does the OLS estimator seem to be biased? If yes, in which direction?
+sc: 
+  - No biased
+  - Upward biased*
+  - Downward biased
+success: |
+  Correct. See the lecture slides for more detailed explanations of the answers.
+#>
+
+#< quiz "apples_c"
+question: |
+  c) Looking at the regression results what is the likely sign of the correlation between the two prices `ecoprice` and `regprice` in the experiment?
+sc: 
+  - Roughly zero (probably uncorrelated)
+  - Positive* 
+  - Negative
+success: |
+  Correct. See the lecture slides for more detailed explanations of the answers.
+#>
+
+#< quiz "apples_d"
+question: |
+  d) Assume you were not sure whether the prices were indeed correctly randomized over households, i.e. chosen independently of household characteristics. Which of the following results suggest that we indeed had proper randomization?
+sc: 
+  - The fact that no estimated coefficients for household characteristic is significant in regression 3.
+  - The fact that the coefficient \(\beta_1\) for `ecoprc` does almost not change between regressions 2 and 3.*
+success: |
+  Correct. See the lecture slides for more detailed explanations of the answers.
+#>
+
+### Interpreting Effect Sizes
+
+#. youtube id="X-pQITEJ5g8", file="ee 3-26.mp4"
+
+#. section
+
+### Non-linear effects
+
+#. youtube id="FnunvzfvIPU", file="ee 3-27.mp4"
+
+### Heterogeneous effects
+
+#. youtube id="NxPzQhjx39k", file="ee 3-28.mp4"
+
+<br>
+Great, you have finished the video lectures for this quite long Chapter 3! 
+
+Maybe after a short break, it is a good time to start with the RTutor problem set of this chapter.
