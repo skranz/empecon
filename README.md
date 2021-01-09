@@ -1,8 +1,8 @@
-This repository contains the material for my course
-
 ## Empirical Economics with R
 
-taught by Sebastian Kranz at Ulm University. The advanced Bachelor course was first taught in the winter term 20/21 and due to the Corona Crisis can be followed as an online course.
+by Sebastian Kranz at Ulm University.
+
+This advanced Bachelor course was first taught in the winter term 20/21 and due to the Corona crisis can be followed as an online course. This Github repository contains all materials or links to it.
 
 ### Videos, multiple choice quizzes and RTutor problem sets
 
