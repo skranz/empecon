@@ -25,7 +25,7 @@ The course consists of the following 5 chapters.
   
 **Chapter 3** digs deeper into linear regression, focusing on the estimation of causal effects and endogeneity problems. In particular, I try to distill the importance of a source of exogenous variation if we want to have any chance of estimating causal effects.
 
-  - Videos & Quizzes: [https://mm.econ.mathematik.uni-ulm.de/public/ee-3/](https://mm.econ.mathematik.uni-ulm.de/public/ee-2/)
+  - Videos & Quizzes: [https://mm.econ.mathematik.uni-ulm.de/public/ee-3/](https://mm.econ.mathematik.uni-ulm.de/public/ee-3/)
   - [RTutor 3.zip](https://github.com/skranz/empecon/raw/main/rtutor_zip/RTutor%203.zip)  
 
 **Chapter 4** covers difference-in-difference estimation. The main example is an experiment by eBay that estimates the effect of search engine marketing on revenues. The RTutor problem set also looks at a classic study on the employment effect of minimum wages. 
